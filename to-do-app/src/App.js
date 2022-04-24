@@ -22,7 +22,7 @@ function App() {
       <div className="TODOList">
 				{/* TODO: consider mapping the todo array here into a list
 									of TODO items */}
-        <div className="TODOItem" key={index}>
+        <div className="TODOItem">
           <div className="TODOItemText">
             <p>A dummy TODO</p>
           </div>
