@@ -1,17 +1,45 @@
 import React, { useState } from "react";
 import "./App.css";
 
-function Todo({ todo }) {
+function Todo({ todo, index, removeTodo}) {
   return (
     <div className="TODOList">
       <div className = "TODOItem">
         <div className = "TODOItemText">
-          { todo.text}
+          <p>{todo.text}</p> 
         </div>
       </div>
+      <div className="TODOItemDelete">
+            <button className="TODOItemButton" onClick={() => removeTodo(index)} >
+              Remove
+              </button>
+          </div>
     </div>
+    
   );
 };
+
+function TodoForm({ addTodo }) {
+  const [value, setValue] = React.useState("");
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!value) return;
+    addTodo(value);
+    setValue("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        className="input"
+        value={value}
+        onChange={e => setValue(e.target.value)}
+      />
+    </form>
+  );
+}
 
 // A todo app where the user can type in a todo and it will be added to the list
 // of todos. The user can also edit and remove a todo from the list.
@@ -19,11 +47,22 @@ function App() {
 	// TODOs: create two states here.
   // The state of the app is stored in the todos array.
 	// The state of the input value should also be stored in a state.
-  let todoArray = [];
   const [todos, setTodos] = React.useState([
-    { text: "Learn about React" },
-    { text: "Build really cool todo app" }
+    { text: "Go to RSF" }
   ]);
+
+  // Input
+  const [value, setValue] = React.useState("");
+  const addTodo = text => {
+    const newTodos = [...todos, { text }];
+    setTodos(newTodos);
+  };
+
+  const removeTodo = index => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
 
   return (
     <div className="TODOContainer">
@@ -31,8 +70,10 @@ function App() {
         <input
           type="text"
           placeholder="Add a new todo"
+          value = {value}
+          onChange={e => setValue(e.target.value)}
         />
-        <button>
+        <button onClick={() => addTodo(value)}>
           Add
         </button>
       </div>
@@ -44,17 +85,18 @@ function App() {
             key={index}
             index={index}
             todo={todo}
+            removeTodo={removeTodo}
           />
         ))}
         <div className="TODOItem">
           <div className="TODOItemText">
-            <p>A dummy TODO</p>
+            <p>Finish WDB HWs</p>
           </div>
           
           <div className="TODOItemDelete">
-            <button className="TODOItemButton">
+            <button className="TODOItemButton" >
               Remove
-              </button>
+            </button>
           </div>
         </div>
       </div>
